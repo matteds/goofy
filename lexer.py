@@ -14,12 +14,22 @@ def run_lexer(file_path: str) -> list:
         "current_char" : buffer[0]
     }
     token = ("START")
+    
+    row_counter = 0
+    column_counter = 0
+    
     while token[0] != "EOF":
         token = advance_to_next_token(lexer)
+        column_counter += 1
         if (token[0] == "COMMENT_LITERAL") or (token[0] == "SPACE"):
             continue
         else:
-            token_list.append(token)
+            token_to_append = (token[0], token[1], row_counter, column_counter)
+            token_list.append(token_to_append)
+        
+        if token[0] == "EOL":
+            row_counter += 1
+            column_counter = 0
 
     return token_list
 
