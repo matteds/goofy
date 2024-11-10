@@ -16,7 +16,10 @@ def run_lexer(file_path: str) -> list:
     token = ("START")
     while token[0] != "EOF":
         token = advance_to_next_token(lexer)
-        token_list.append(token)
+        if (token[0] == "COMMENT_LITERAL") or (token[0] == "SPACE"):
+            continue
+        else:
+            token_list.append(token)
 
     return token_list
 
@@ -32,19 +35,35 @@ def advance_to_next_token(lexer: dict) -> tuple[str, str|None, int]:
     elif char == "\n":
         read_char(lexer)
         return ("EOL", None, token_position)
+    # indentation (4 spaces)
     elif char == " ":
-        read_char(lexer)
-        return ("SPACE", None, token_position)
+        next_char_1 = peek_char(lexer)
+        next_char_2 = peek_char(lexer)
+        next_char_3 = peek_char(lexer)
+        next_char_4 = peek_char(lexer)
+        if (next_char_1 == " ") and (next_char_2 == " ") and (next_char_3 == " ") and (next_char_4 == " "):
+            read_char(lexer)
+            read_char(lexer)
+            read_char(lexer)
+            read_char(lexer)
+            return ("INDENTATION", None, token_position)
+        else:
+            read_char(lexer)
+            return ("SPACE", None, token_position)
+    # punctuation
     elif char == ":":
         read_char(lexer)
         return ("COLON", None, token_position)
+    elif char == ",":
+        read_char(lexer)
+        return ("COMMA", None, token_position)
     # brackets
     elif char == "(":
         read_char(lexer)
         return ("L_BRACKET", None, token_position)
     elif char == ")":
         read_char(lexer)
-        return ("L_BRACKET", None, token_position)
+        return ("R_BRACKET", None, token_position)
     elif char == "[":
         read_char(lexer)
         return ("L_S_BRACKET", None, token_position)
@@ -101,6 +120,9 @@ def advance_to_next_token(lexer: dict) -> tuple[str, str|None, int]:
     elif char == "%":
         read_char(lexer)
         return ("MODULUS", None, token_position)
+    # comments
+    elif char == "#":
+        return comment_to_token(lexer)
     # comparison operators  
     elif char == "=":
         next_char = peek_char(lexer)
@@ -172,6 +194,8 @@ def literal_to_token(literal: str, token_position: int) -> tuple[str, str, int]:
         return ("OR", None, token_position)
     elif literal == "continue":
         return ("CONTINUE", None, token_position)
+    elif literal == "return":
+        return ("RETURN", None, token_position)
     else:
         return ("IDENTIFIER", literal, token_position)
 
@@ -185,6 +209,17 @@ def string_to_token(lexer: dict) -> tuple[str, str, int]:
         read_char(lexer)
     read_char(lexer)
     return ("STRING_LITERAL", "".join(literal), token_position)
+
+def comment_to_token(lexer: dict) -> tuple[str, str, int]:
+    token_position = lexer["current_pos"]
+    read_char(lexer)
+    literal = []
+    while lexer["current_char"] != '\n':
+        char = lexer["current_char"]
+        literal.append(char)
+        read_char(lexer)
+    read_char(lexer)
+    return ("COMMENT_LITERAL", "".join(literal), token_position)
 
 ### Lexer movement        
 def peek_char(lexer: dict) -> str:
