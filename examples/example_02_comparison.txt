@@ -1,0 +1,17 @@
+a: int = 1
+b: int = 2
+
+if a < b:
+    continue
+elif a > b:
+    continue
+elif a <= b:
+    continue
+elif a >= b:
+    continue
+elif (a >= 2) and (a <= 7):
+    continue
+elif (b >= 2) or (b == 7):
+    continue
+else:
+    continue

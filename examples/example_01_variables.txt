@@ -1,0 +1,4 @@
+var_1: int = 1
+var_2: double = 2.0000
+var_3: float = 3.00
+var_4: str = "Hello, world!"
