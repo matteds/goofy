@@ -192,6 +192,10 @@ def literal_to_token(literal: str, token_position: int) -> tuple[str, str, int]:
         return ("FLOAT", None, token_position)
     elif literal == "double":
         return ("DOUBLE", None, token_position)
+    elif literal == "while":
+        return ("WHILE", None, token_position)
+    elif literal == "for":
+        return ("FOR", None, token_position)
     elif literal == "if":
         return ("IF", None, token_position)
     elif literal == "elif":
