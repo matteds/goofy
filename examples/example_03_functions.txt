@@ -1,4 +1,4 @@
 add(x: int, y:int) -> int:
     return x + y
 
-#TODO: add comments and variable arguments functions
+#TODO: add variable arguments functions
