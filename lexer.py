@@ -215,6 +215,9 @@ def string_to_token(lexer: dict) -> tuple[str, str, int]:
     literal = []
     while lexer["current_char"] != '"':
         char = lexer["current_char"]
+        if (char == "\n") or (char == "EOF"):
+            read_char(lexer)
+            return ("ILLEGAL", "STRING_UNTERMINATED", token_position)
         literal.append(char)
         read_char(lexer)
     read_char(lexer)
@@ -226,6 +229,9 @@ def comment_to_token(lexer: dict) -> tuple[str, str, int]:
     literal = []
     while lexer["current_char"] != '\n':
         char = lexer["current_char"]
+        if (char == "EOF"):
+            read_char(lexer)
+            return ("ILLEGAL", "COMMENT_UNTERMINATED", token_position)
         literal.append(char)
         read_char(lexer)
     read_char(lexer)
