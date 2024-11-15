@@ -6,7 +6,7 @@ func_name(var_1: type_1 | type_2, var_2: type_3 = 89) -> int:
     return 0
 
 SYMBOLS
- arithmetic operators
+--arithmetic operators
 +
 -
 /
@@ -16,22 +16,21 @@ SYMBOLS
 %
 +=
 -=
- comparison operators
+--comparison operators
 ==
 !=
 <=
 >=
- logical operators
+--logical operators
 |
 &
- flow control
+--flow control
 if
 elif
 else
- iteration control
+--iteration control
 for
 while
- other
-return
-continue
+--other
 #comment
+--keywords
